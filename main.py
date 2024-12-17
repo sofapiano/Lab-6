@@ -1,88 +1,46 @@
-class File:
-    className = 'File'
-    objectsCount = 0
+class Android:
+    def __init__(self):
+        self.hp = 100
+        self.attack = 10
+        self.deviancy = 5
+    
+    def change_deviancy(self, deviancy):
+        self.deviancy += deviancy
 
-    def __init__(self, name, kbs, type):
-        self._name = name
-        self._kbs = kbs
-        self._type = type
-        File.objectsCount = File.objectsCount + 1
+    def get_damage(self, damage):
+        self.hp -= damage
 
-    def get_name(self):
-        return self._name
+    def attack(self, enemy):
+        enemy.get_damage(self.attack)
 
-    def set_name(self, n):
-        self._name = n
-
-    def get_kbs(self):
-        return self._kbs
-
-    def set_kbs(self, kbs):
-        if kbs > 0:
-            self._kbs = kbs
-        else:
-            self._kbs = 0.1
-
-    def type(self):
-        return self._type
-
-    def info(self):
-        print(self._name)
-        print(f"Размер: {self._kbs} кб")
-        print(f'Формат: {self._type}')
-
-    def kbsToBytes(self):
-        print(f'Размер в байтах: {self._kbs * 1024}')
+    def __add__(self, value):
+        new_attack = self.attack + value
+        return new_attack
 
 
-class Image(File):
-    className = 'Image'
+class Connor(Android):
+    def __init__(self):
+        super().__init__()
+        self.attack = 70
 
-    def __init__(self, name, kbs, type, height, width):
-        super().__init__(name, kbs, type)
-        self.height = height
-        self.width = width
+    def change_deviancy(self, deviancy):
+        if deviancy > 50:
+            self.attack = 50
+        return super().change_deviancy(deviancy)
 
-    def set_height(self, height):
-        if height > 0:
-            self.height = height
-        else:
-            self.height = 1
+    def die(self):
+        self.deviancy = 0
+    
 
-    def set_width(self, width):
-        if width > 0:
-            self.width = width
-        else:
-            self.width = 1
+class Kara(Android):
+    def __init__(self):
+        super().__init__()
+        self.deviancy = 60
 
-    def info(self):
-        super().info()
-        print(f'Тип: {Image.className}')
-        print(f"Высота (пкс): {self.height}")
-        print(f'Ширина (пкс): {self.width}')
+    def die_Alice(self):
+        self.hp = 0
 
-    def amount(self):
-        print(f'Площадь в пикселях: {self.height * self.width}')
-
-    def __eq__(self, other):
-        return self.height == other.height and self.width == other.width
-
-
-b = File("Объект класса " + File.className, 11, 'TXT')
-b.info()
-b.kbsToBytes()
-
-print('\n')
-
-im = Image('background.jpg', 44.1, 'JPG', 800, 600)
-im2 = Image('new_background.jpg', 42.8, 'JPG', 800, 600)
-
-im.amount()
-im.kbsToBytes()
-
-if (im == im2) is True:
-    print(f'{im.get_name()} и {im2.get_name()} равны.')
-else:
-    print(f'{im.get_name()} и {im2.get_name()} не равны.')
-
-print(f'Objects count: {File.objectsCount}')
+    def change_deviancy(self, deviancy):
+        if deviancy > 50:
+            self.attack = 70
+        return super().change_deviancy(deviancy)
